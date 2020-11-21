@@ -17,6 +17,8 @@ import SentimentDissatisfied from "@material-ui/icons/SentimentDissatisfied"
 import { useQuery } from "react-query"
 import { getCity } from "./api/weather"
 import { CitySearchDTO } from "./api/types"
+import { useDevice } from "./hooks/use-device"
+import { NonMobileDetected } from "./components/non-mobile"
 
 const useStyles = makeStyles<Theme>((theme) => ({
   paper: {
@@ -53,6 +55,8 @@ export const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [chosenCity, setChosenCity] = useState<CitySearchDTO>()
 
+  const { width } = useDevice()
+
   const { data } = useQuery(["citySearch", debouncedQuery], getCity, {
     enabled: !!debouncedQuery,
     onSuccess: () => setLoading(false),
@@ -73,6 +77,8 @@ export const App: React.FC = () => {
   useEffect(() => {
     localStorage.setItem("cityQuery", debouncedQuery)
   }, [debouncedQuery])
+
+  if (width > 600) return <NonMobileDetected />
 
   return (
     <Container maxWidth="xs" style={{ padding: 16 }}>
