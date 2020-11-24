@@ -7,12 +7,10 @@ type ReturnType = {
 
 export const useDevice = (): ReturnType => {
   const [width, setWidth] = useState<number>(window.innerWidth)
-  const setDebouncedWidth = useDebouncedCallback(
+  const { callback: handleResize } = useDebouncedCallback(
     () => setWidth(window.innerWidth),
     100
   )
-
-  const handleResize = (): void => setDebouncedWidth.callback()
 
   useEffect(() => {
     window.addEventListener("resize", handleResize)
