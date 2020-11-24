@@ -43,7 +43,7 @@ const useStyles = makeStyles<Theme>((theme) => ({
 }))
 
 type Props = {
-  handleCityClick: (city: CitySearchDTO) => void
+  handleCityClick: (cityKey: CitySearchDTO) => void
 }
 
 export const SearchCities: React.FC<Props> = ({ handleCityClick }) => {
@@ -61,17 +61,6 @@ export const SearchCities: React.FC<Props> = ({ handleCityClick }) => {
   useEffect(() => {
     setLoading(!!query)
   }, [query])
-
-  // load city query from LS on mount
-  useEffect(() => {
-    const cityQuery = localStorage.getItem("cityQuery")?.trim()
-    if (cityQuery) setQuery(cityQuery)
-  }, [])
-
-  // save query to LS on each debounced change
-  useEffect(() => {
-    localStorage.setItem("cityQuery", debouncedQuery)
-  }, [debouncedQuery])
 
   return (
     <>

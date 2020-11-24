@@ -6,7 +6,9 @@ import {
   Typography,
   Paper,
   CircularProgress,
+  IconButton,
 } from "@material-ui/core"
+import ArrowBack from "@material-ui/icons/ArrowBack"
 import { CitySearchDTO } from "../api/types"
 import {
   getCurrentConditions,
@@ -39,31 +41,41 @@ const CenteredSpinner: React.FC = () => {
 }
 
 type Props = {
-  chosenCity: CitySearchDTO
+  chosenCityKey: string
+  chosenCityName: string
+  goBack: () => void
 }
 
-export const GetWeather: React.FC<Props> = ({ chosenCity }) => {
+export const GetWeather: React.FC<Props> = ({
+  chosenCityKey,
+  chosenCityName,
+  goBack,
+}) => {
   const classes = useStyles()
 
   const { status: currConditionStatus, data: currConditions } = useQuery(
-    ["currentConditions", chosenCity.Key],
+    ["currentConditions", chosenCityKey],
     getCurrentConditions
   )
 
   const { status: todayStatus, data: todayForecast } = useQuery(
-    ["1DayForecast", chosenCity.Key],
+    ["1DayForecast", chosenCityKey],
     get1DayForecast
   )
 
   const { status: futureStatus, data: futureForecast } = useQuery(
-    ["5DayForecast", chosenCity.Key],
+    ["5DayForecast", chosenCityKey],
     get5DayForecast
   )
 
   return (
     <>
+      <IconButton onClick={goBack}>
+        <ArrowBack />
+      </IconButton>
+
       <Typography variant="h4" style={{ textAlign: "center" }}>
-        {chosenCity?.EnglishName}
+        {chosenCityName}
       </Typography>
 
       {/* current conditions */}
